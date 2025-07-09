@@ -2,6 +2,7 @@ package org.example.loginandregister.user;
 import lombok.AllArgsConstructor;
 
 import org.example.loginandregister.config.JwtUtil;
+import org.example.loginandregister.exception.ResourceNotFound;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class UserService {
     }
 
     public String login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User Not found"));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResourceNotFound("User Not found"));
         boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if(!passwordMatches) {
